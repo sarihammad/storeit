@@ -6,21 +6,43 @@ public class KeyValueStore {
 	private final Map<String, Entry> store;
 
     private final ScheduledExecutorService cleaner = Executors.newSingleThreadScheduledExecutor();
+	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
 
-    public KeyValueStore(int maxSize) {
+	private final SnapshotManager snapshotManager;
+
+	public KeyValueStore(int maxSize, String snapshotPath) {
 		store = Collections.synchronizedMap(new EvictingMap<>(maxSize));
-        cleaner.scheduleAtFixedRate(() -> {
-            for (String key : store.keySet()) {
-                Entry entry = store.get(key);
-                if (entry != null && entry.isExpired()) {
-                    store.remove(key);
-                }
-            }
-        }, 1, 1, TimeUnit.SECONDS);
-    }
+		this.snapshotManager = new SnapshotManager(snapshotPath);
+
+		// Restore from disk if available
+		Map<String, Entry> restored = snapshotManager.load();
+		if (restored != null) {
+			store.putAll(restored);
+			System.out.println("Restored from snapshot");
+		}
+
+		// TTL eviction
+		scheduler.scheduleAtFixedRate(() -> {
+			for (String key : store.keySet()) {
+				Entry entry = store.get(key);
+				if (entry != null && entry.isExpired()) {
+					store.remove(key);
+				}
+			}
+		}, 1, 1, TimeUnit.SECONDS);
+
+		// Periodic snapshots
+		scheduler.scheduleAtFixedRate(() -> snapshotManager.save(store), 10, 10, TimeUnit.SECONDS);
+
+		// On shutdown
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			snapshotManager.save(store);
+			scheduler.shutdown();
+		}));
+	}
 
 	public KeyValueStore() {
-		this(1000);
+		this(1000, "store.snapshot");
 	}
 
     public void set(String key, String value) {
