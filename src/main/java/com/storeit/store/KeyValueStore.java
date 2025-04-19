@@ -65,4 +65,9 @@ public class KeyValueStore {
     public void delete(String key) {
         store.remove(key);
     }
+
+	public void shutdown() {
+		snapshotManager.save(store);
+		scheduler.shutdown();
+	}
 }
