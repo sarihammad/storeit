@@ -3,10 +3,12 @@ package com.storeit.store;
 import java.util.concurrent.*;
 
 public class KeyValueStore {
-    private final ConcurrentHashMap<String, Entry> store = new ConcurrentHashMap<>();
+	private final Map<String, Entry> store;
+
     private final ScheduledExecutorService cleaner = Executors.newSingleThreadScheduledExecutor();
 
-    public KeyValueStore() {
+    public KeyValueStore(int maxSize) {
+		store = Collections.synchronizedMap(new EvictingMap<>(maxSize));
         cleaner.scheduleAtFixedRate(() -> {
             for (String key : store.keySet()) {
                 Entry entry = store.get(key);
@@ -16,6 +18,10 @@ public class KeyValueStore {
             }
         }, 1, 1, TimeUnit.SECONDS);
     }
+
+	public KeyValueStore() {
+		this(1000);
+	}
 
     public void set(String key, String value) {
         store.put(key, new Entry(value, -1));
