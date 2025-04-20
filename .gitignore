@@ -3,3 +3,5 @@
 *.iml
 out/
 build/
+.DS_Store
+store.snapshot
