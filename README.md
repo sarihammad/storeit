@@ -21,18 +21,20 @@ It supports core operations (`SET`, `GET`, `DELETE`), TTL expiration, LRU evicti
 
 ## Project Structure
 
-storeit/
+```storeit/
 ├── src/
 │   ├── main/
-│   │   └── java/com/storeit/
-│   │       ├── store/          # In-memory store logic (GET, SET, TTL, LRU)
-│   │       ├── pubsub/         # Pub/Sub system
-│   │       ├── server/         # SocketServer
-│   │       └── client/         # CLI Client
-│   └── test/                   # Unit tests (optional)
-├── out/                        # Compiled class files
+│   │   └── java/
+│   │       └── com/
+│   │           └── storeit/
+│   │               ├── store/      # In-memory store logic (GET, SET, TTL, LRU)
+│   │               ├── pubsub/     # Pub/Sub system
+│   │               ├── server/     # SocketServer
+│   │               └── client/     # CLI Client
+│   └── test/                       # Unit tests
+├── out/                            # Compiled class files
 └── README.md
-
+```
 ---
 
 ## How to Run
