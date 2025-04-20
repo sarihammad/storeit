@@ -1,11 +1,14 @@
 package com.storeit.store;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.*;
+
+import com.storeit.persistence.SnapshotManager;
 
 public class KeyValueStore {
 	private final Map<String, Entry> store;
 
-    private final ScheduledExecutorService cleaner = Executors.newSingleThreadScheduledExecutor();
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
 
 	private final SnapshotManager snapshotManager;

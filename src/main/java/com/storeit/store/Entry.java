@@ -1,5 +1,7 @@
 package com.storeit.store;
 
+import java.io.Serializable;
+
 public class Entry implements Serializable {
 
 	private static final long serialVersionUID = 1L;
