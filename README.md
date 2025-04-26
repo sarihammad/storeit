@@ -1,21 +1,8 @@
-# StoreIt: In-Memory Key-Value Store
+# StoreIt
 
 Redis-inspired, multithreaded in-memory key-value store.
 
 Supports `SET`, `GET` & `DELETE` operations, TTL expiration, LRU eviction, snapshot persistence, and multi-client communication over sockets.
-
----
-
-## Features
-
-- SET / GET / DELETE operations
-- TTL expiration for keys (e.g. `SET key value EX 10`)
-- LRU eviction
-- Persistence: Snapshot saved to disk on shutdown + every 10s
-- Thread-safe with support for multiple clients
-- Socket server handles raw commands over TCP
-- Pub/Sub support with `SUBSCRIBE` and `PUBLISH` commands
-- Java CLI Client to interact with StoreIt in the terminal
 
 ---
 
@@ -48,12 +35,12 @@ StoreIt Server started on port 6379
 Inside the client:
 
 ```bash
-SET foo bar
-GET foo
-DELETE foo
+SET key value
+GET key
+DELETE key
 
-SET hello world EX 5
-GET hello
+SET key value EX 5
+GET key
 
 SUBSCRIBE chat
 ```
