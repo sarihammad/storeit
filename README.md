@@ -1,8 +1,8 @@
 # StoreIt: In-Memory Key-Value Store
 
-StoreIt is a Redis-inspired, multithreaded in-memory key-value store written in Java.
+Redis-inspired, multithreaded in-memory key-value store.
 
-It supports core operations (`SET`, `GET`, `DELETE`), TTL expiration, LRU eviction, snapshot persistence, and multi-client communication over sockets.
+Supports `SET`, `GET` & `DELETE` operations, TTL expiration, LRU eviction, snapshot persistence, and multi-client communication over sockets.
 
 ---
 
@@ -31,11 +31,6 @@ javac -d out src/main/java/com/storeit/**/*.java
 
 ```bash
 java -cp out com.storeit.server.SocketServer
-```
-
-You should see:
-
-```bash
 StoreIt Server started on port 6379
 ```
 
